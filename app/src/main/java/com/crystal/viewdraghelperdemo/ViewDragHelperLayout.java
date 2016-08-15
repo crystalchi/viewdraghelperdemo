@@ -158,7 +158,7 @@ public class ViewDragHelperLayout extends ViewGroup{
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
-        if(action == MotionEvent.ACTION_DOWN){
+       /* if(action == MotionEvent.ACTION_DOWN){
 
         }else if(action == MotionEvent.ACTION_MOVE){
             if(!isViewUnder(mScrollableView, (int)mX, (int)mY)){
@@ -167,7 +167,7 @@ public class ViewDragHelperLayout extends ViewGroup{
                 boolean flag = super.dispatchTouchEvent(event);
                 return flag;
             }
-        }
+        }*/
         Log.d(TAG, "dispatchTouchEvent... " + super.dispatchTouchEvent(event));
         return super.dispatchTouchEvent(event);
     }
@@ -197,8 +197,8 @@ public class ViewDragHelperLayout extends ViewGroup{
                 break;
         }
 
-
-        Log.d(TAG, "onInterceptTouchEvent... " + mViewDragHelper.shouldInterceptTouchEvent(event));
+        boolean interceptFlag = mViewDragHelper.shouldInterceptTouchEvent(event);
+        Log.d(TAG, "onInterceptTouchEvent... " + interceptFlag);
         return mViewDragHelper.shouldInterceptTouchEvent(event);
     }
 
