@@ -5,6 +5,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,11 @@ import android.view.ViewGroup;
  */
 public class YoutubeLayout extends ViewGroup{
 
+    private static final String TAG = YoutubeLayout.class.getSimpleName();
+
     private final ViewDragHelper mDragHelper;
 
+    private View mListView;
     private View mHeaderView;
     private View mDescView;
 
@@ -25,6 +29,8 @@ public class YoutubeLayout extends ViewGroup{
     private int mDragRange;
     private int mTop;
     private float mDragOffset;
+
+    private boolean isDrag = false;
 
 
     public YoutubeLayout(Context context) {
@@ -38,13 +44,15 @@ public class YoutubeLayout extends ViewGroup{
     public YoutubeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mDragHelper = ViewDragHelper.create(this, 1f, new DragHelperCallback());
+        isDrag = false;
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        mListView = findViewById(R.id.listView);
         mHeaderView = findViewById(R.id.header);
-        mDescView = findViewById(R.id.desc);
+        mDescView = findViewById(R.id.lv);
     }
 
     public void maximize() {
@@ -70,13 +78,17 @@ public class YoutubeLayout extends ViewGroup{
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            return child == mHeaderView;
+            if(child == mHeaderView){
+                isDrag = true;
+                return isDrag;
+            }
+            return false;
         }
 
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
             mTop = top;
-
+            Log.d(TAG, "mTop is " + mTop);
             mDragOffset = (float) top / mDragRange;
 
            /* mHeaderView.setPivotX(mHeaderView.getWidth());
@@ -84,7 +96,7 @@ public class YoutubeLayout extends ViewGroup{
             mHeaderView.setScaleX(1 - mDragOffset / 2);
             mHeaderView.setScaleY(1 - mDragOffset / 2);*/
 
-            mDescView.setAlpha(1 - mDragOffset);
+            //mDescView.setAlpha(1 - mDragOffset);
 
             requestLayout();
         }
@@ -182,14 +194,14 @@ public class YoutubeLayout extends ViewGroup{
             case MotionEvent.ACTION_UP: {
                 final float dx = x - mInitialMotionX;
                 final float dy = y - mInitialMotionY;
-                final int slop = mDragHelper.getTouchSlop();
+                /*final int slop = mDragHelper.getTouchSlop();
                 if (dx * dx + dy * dy < slop * slop && isHeaderViewUnder) {
                     if (mDragOffset == 0) {
                         smoothSlideTo(1f);
                     } else {
                         smoothSlideTo(0f);
                     }
-                }
+                }*/
                 break;
             }
         }
@@ -224,6 +236,16 @@ public class YoutubeLayout extends ViewGroup{
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         mDragRange = getHeight() - mHeaderView.getHeight();
 
+        if(mTop == 0 && !isDrag){
+            mTop = getHeight() - mHeaderView.getMeasuredHeight();
+        }
+
+        mListView.layout(
+                0,
+                0,
+                r,
+                getHeight() - mHeaderView.getMeasuredHeight());
+
         mHeaderView.layout(
                 0,
                 mTop,
@@ -235,5 +257,7 @@ public class YoutubeLayout extends ViewGroup{
                 mTop + mHeaderView.getMeasuredHeight(),
                 r,
                 mTop  + b);
+
+        Log.d(TAG, "mTop, b is " +  mTop + ", " + b);
     }
 }

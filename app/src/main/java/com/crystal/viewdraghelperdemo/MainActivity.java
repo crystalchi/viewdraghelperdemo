@@ -12,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
    /* private ListView mainlistview;
@@ -42,17 +45,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         final TextView viewHeader = (TextView) findViewById(R.id.header);
+        final ListView lv = (ListView) findViewById(R.id.lv);
         final YoutubeLayout youtubeLayout = (YoutubeLayout) findViewById(R.id.dragLayout);
         final ListView listView = (ListView) findViewById(R.id.listView);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final List<String> list = new ArrayList<String>();
+        for (int i = 1; i <= 100; i++){
+            list.add("rose" + i);
+        }
+        lv.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, list));
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                viewHeader.setText(list.get(position));
+            }
+        });
+
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 viewHeader.setText(listView.getAdapter().getItem(i).toString());
                 youtubeLayout.setVisibility(View.VISIBLE);
                 youtubeLayout.maximize();
             }
-        });
+        });*/
 
         listView.setAdapter(new BaseAdapter() {
             @Override

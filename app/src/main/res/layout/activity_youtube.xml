@@ -1,21 +1,23 @@
 <FrameLayout
-
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:tag="list"
-            />
+
 
     <com.crystal.viewdraghelperdemo.YoutubeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/dragLayout"
             android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tag="list"
+            />
+
 
         <TextView
                 android:id="@+id/header"
@@ -29,16 +31,13 @@
                 android:textColor="@android:color/white"
                 android:background="#AD78CC"/>
 
-        <TextView
-                android:id="@+id/desc"
-                android:tag="desc"
-                android:textSize="35sp"
-                android:gravity="center"
-                android:text="Loreum Loreum Loreum Loreum Loreum Loreum LoreumLoreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum Loreum"
-                android:textColor="@android:color/white"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FF00FF"/>
+
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FF00FF"
+            />
 
     </com.crystal.viewdraghelperdemo.YoutubeLayout>
 </FrameLayout>
