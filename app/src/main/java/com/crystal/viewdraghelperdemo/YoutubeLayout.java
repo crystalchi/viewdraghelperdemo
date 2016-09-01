@@ -88,8 +88,8 @@ public class YoutubeLayout extends ViewGroup{
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
             mTop = top;
-            Log.d(TAG, "mTop is " + mTop);
             mDragOffset = (float) top / mDragRange;
+            /*Log.d(TAG, "mDragRange ， mTop ，mDragOffset" + mDragRange + " , " + mTop + " , " + mDragOffset);*/
 
            /* mHeaderView.setPivotX(mHeaderView.getWidth());
             mHeaderView.setPivotY(mHeaderView.getHeight());
@@ -104,25 +104,51 @@ public class YoutubeLayout extends ViewGroup{
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             int top = getPaddingTop();
-            if (yvel > 0 || (yvel == 0 && mDragOffset > 0.5f)) {
+            Log.d(TAG, "yvel ， mTmDragOffset  is " + yvel + " , " + mDragOffset);
+            /*if (yvel > 0 || (yvel == 0 && mDragOffset > 0.5f)) {
                 top += mDragRange;
+            }*/
+            if(mDragOffset > 0.5f && mDragOffset < 0.8f){
+                top = getHeight() / 2;
             }
             mDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top);
             invalidate();
         }
 
+        /**
+         * 设置滑动面板在垂直方向上的滑动范围值
+         * @param child
+         * @return
+         */
         @Override
         public int getViewVerticalDragRange(View child) {
             return mDragRange;
         }
 
+        /**
+         * 限制滑动面板在垂直方向上的滑动范围
+         * @param child
+         * @param top
+         * @param dy
+         * @return
+         */
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            final int topBound = getPaddingTop();
+            /*final int topBound = getPaddingTop();
             final int bottomBound = getHeight() - mHeaderView.getHeight() - mHeaderView.getPaddingBottom();
 
             final int newTop = Math.min(Math.max(top, topBound), bottomBound);
-            return newTop;
+            return newTop;*/
+
+            final int topBound = getPaddingTop();
+            final int bottomBound = getHeight() - mHeaderView.getHeight();
+            if(top < topBound){
+                top = topBound;
+            }
+            if(top > bottomBound){
+                top = bottomBound;
+            }
+            return top;
         }
 
     }
@@ -258,6 +284,6 @@ public class YoutubeLayout extends ViewGroup{
                 r,
                 mTop  + b);
 
-        Log.d(TAG, "mTop, b is " +  mTop + ", " + b);
+//        Log.d(TAG, "mTop, b is " +  mTop + ", " + b);
     }
 }

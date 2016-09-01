@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".VdhActivity"/>
-        <activity android:name=".YoutubeActivity"/>
+        <activity android:name=".YoutubeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
